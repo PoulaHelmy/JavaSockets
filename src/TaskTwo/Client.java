@@ -1,11 +1,12 @@
-package TaskOne;
+package TaskTwo;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-
     private Socket clientSocket = null;
     private DataOutputStream out;
     private DataInputStream in;
@@ -24,23 +25,25 @@ public class Client {
         clientSocket.close();
     }//end of stopConnection
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
         Scanner input=new Scanner(System.in);
         String ip = "127.0.0.1";
-        int port = 6060;
+        int port = 7070;
         Client client = new Client(ip, port);
         System.out.println(client.in.readUTF());
-                while (true){
-                    String tosend = input.nextLine();
-                    if(tosend.equalsIgnoreCase("Exit")){
-                        System.out.println("Closing this connection : " + client.clientSocket);
-                        client.stopConnection();
-                        System.out.println("Connection closed");
-                        break;
-                    } else {
-                        client.out.writeUTF(tosend);
-                        System.out.println(client.in.readUTF());
-                    }
-                }//end of while
+        while (true){
+            System.out.println(client.in.readUTF());
+            String tosend = input.nextLine();
+            if(tosend.equalsIgnoreCase("Exit")){
+                System.out.println("Closing this connection : " + client.clientSocket);
+                client.stopConnection();
+                System.out.println("Connection closed");
+                break;
+            } else {
+                client.out.writeUTF(tosend);
+                System.out.println(client.in.readUTF());
+            }
+        }//end of while
+
     }//end of main
 }//end of Class
